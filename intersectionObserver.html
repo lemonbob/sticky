@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .intersection-sentinel {
+            position: absolute;
+            width: 100%;
+            border: 2px yellow dashed;
+            top: 0px;
+            left: 0;
+            text-align: center;
+            padding: 10px;           
+        }
+
+        .sticky {
+            position: sticky;
+            top: 0;
+            border: 2px red dashed;
+            background: rgba(255, 0, 0, 0.7);
+            z-index: 100;
+        }
+
+        .logo {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border: 2px green dashed;
+            background: rgba(0, 255, 0, 0.5);
+            transition: all 1s ease;
+        }
+
+        .main {
+            position: relative;
+            height: 2000px;
+            border: 2px blue dashed;
+            background: rgba(0, 0, 155, 0.5);
+            z-index: 50;
+        }
+
+        body {
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .wrapper {
+            height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <div class="sticky">
+            <div class="logo">logo</div>            
+        </div>
+        <div class="main">
+            <!--intersection sentinel goes at top of section we are observing-->
+            <div class="intersection-sentinel">Sentinel</div>
+        </div>
+    </div>
+    <script>
+        //method that runs on sentiel intersetion
+        let isoCallback = function (entries, observer) {
+            let logo = document.querySelector('.logo');
+            if (entries[0].intersectionRatio < 0.95){
+                logo.style.width = '100px';
+                logo.style.height = '100px';
+            } else {
+                logo.style.width = '200px';
+                logo.style.height = '200px';
+            }
+        }
+
+        let isoOptions = {
+            //root: document.querySelector('.wrapper'),
+            rootMargin: '0px',
+            threshold: 0.95 // 0 - 1.0
+        }
+        let isoObserver = new IntersectionObserver(isoCallback, isoOptions);
+        isoObserver.observe(document.querySelector('.intersection-sentinel'));
+
+    </script>
+
+</body>
+
+</html>
